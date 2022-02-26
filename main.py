@@ -16,7 +16,7 @@ import population
 import random
 import time
 import matplotlib.pyplot as plt
-import shutil
+#import shutil
 from datetime import date
 import numpy as np
 from mpl_toolkits.mplot3d import axes3d
@@ -107,7 +107,7 @@ print(f' Tempo de Processamento = {fim - inicio}')
 
 now = str(date.today())
 
-local = '/home/bruno/Documentos/repositorios/isp_massa-total_nsga2//banco_dados/'
+local = '/home/bruno/Documentos/GitHub/Abordagem-2_Otimizacao-de-Sistema-Propulsivo-com-NSGA_2/banco_dados/'
 nome_arquivo = str(f'{now}_{num_geracoes}_{pop_size}')
 endereco = local + nome_arquivo + '.txt'
 
