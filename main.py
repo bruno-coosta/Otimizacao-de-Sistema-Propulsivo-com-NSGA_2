@@ -116,7 +116,7 @@ with open(endereco,'w') as arquivo:
     arquivo.write('\n')
     arquivo.write(f'Otimização Multiobjetivo de sistema um propulsivo Bi-propelente utilizando NSGA2 ' + '\n')
     arquivo.write(f'Objetico 1 = Maximizar Isp' + '\n')
-    arquivo.write(f'Objetico 2 = Minimizar Custo de Reangente' + '\n')
+    arquivo.write(f'Objetico 2 = Minimizar Massa Total do Sistema Propulsivo' + '\n')
     arquivo.write('\n')
 
     arquivo.write(f'Parâmetros do Algoritmo Genético de otimização:' + '\n')
@@ -141,7 +141,7 @@ with open(endereco,'w') as arquivo:
     for geracao in range(0, num_geracoes):
         arquivo.write(f' GERACAO {geracao}' + '\n' + '-$$' * 60 + '\n' * 2)
         for b in P[geracao]:
-            arquivo.write(f'Rank ( {b.rank} ) | ISP = {round(b.isp)} s | Cf = {round(b.Cf, 2)} | cstar = {round(b.cstar, 2)} m/s | F = {round(b.empuxo)} N | O/F = {round(b.genes[0], 1)} | Pc = {round(b.genes[1] * 14.504, 1)} psi | Temp = {round(b.temperaturaCC)} K | custo = R$ {round(b.preco_total)} | dt = {round(b.genes[2], 1)} mm | R_exp = {round(b.Razao_Expansao, 1)} | tb = {round(b.t_burn, 1)} s ' + '\n')
+            arquivo.write(f'Rank ( {b.rank} ) | ISP = {round(b.isp)} s | Cf = {round(b.Cf, 2)} | cstar = {round(b.cstar, 2)} m/s | F = {round(b.empuxo)} N | O/F = {round(b.genes[0], 1)} | Pc = {round(b.genes[1] * 14.504, 1)} psi | Temp = {round(b.temperaturaCC)} K | dt = {round(b.genes[2], 1)} mm | R_exp = {round(b.Razao_Expansao, 1)} | tb = {round(b.t_burn, 1)} s ' + '\n')
             arquivo.write(f'             DeltaP injetor = {round(b.deltaP_inj * 14.504, 1)} psi | M_prop= {round(b.massa_propelente, 1)} Kg | M_sistema = {round(b.massa_total, 1)} Kg ' + '\n' + '--' * 90 + '\n' ) 
 #-------------------------------- Armazenando no txt--------------------------------
 
@@ -164,28 +164,28 @@ for individuo in P[1]:
     preco_g1.append(individuo.preco_total)
 
 
-plt.title('Ethanol 95% - N2O (Geração 1)', fontsize = 20, color='#0c2356')
+plt.title('Etanol - LOX(Geração 1)', fontsize = 20, color='#0c2356')
 plt.scatter(isp_g1, preco_g1, color='r')
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
-plt.ylabel('preço de reagente [R$]', fontsize = 15, color='#0c2356')
+plt.ylabel('Massa Total do Sistema Prpulsivo [kg]', fontsize = 15, color='#0c2356')
 plt.grid(alpha=0.4)
 plt.show()
 
 
 # plt.figure()
 plt.scatter(isp, preco, color='#27a9e1')
-plt.title('Ethanol 95% - N2O ', fontsize = 20, color='#0c2356')
+plt.title('Etanol - LOX', fontsize = 20, color='#0c2356')
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
-plt.ylabel('preço de reagente [R$]', fontsize = 15, color='#0c2356')
+plt.ylabel('Massa Total do Sistema Prpulsivo [kg]', fontsize = 15, color='#0c2356')
 plt.grid(alpha=0.4)
 plt.show()
 
 
-plt.title('Ethanol 95% - N2O ', fontsize = 20, color='#0c2356')
+plt.title('Etanol - LOX', fontsize = 20, color='#0c2356')
 plt.scatter(isp_g1, preco_g1, color='r')
 plt.scatter(isp, preco, color='#27a9e1')
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
-plt.ylabel('preço de reagente [R$]', fontsize = 15, color='#0c2356')
+plt.ylabel('Massa Total do Sistema Prpulsivo [kg]', fontsize = 15, color='#0c2356')
 plt.grid(alpha=0.4)
 plt.show()
 

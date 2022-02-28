@@ -5,14 +5,14 @@ from rocketcea.cea_obj import CEA_Obj, add_new_fuel, add_new_oxidizer
 import propelentes as prop
 
 #---------------------------------- Entradas do Programa ----------------------------------
-deltav = 316 # m/s - Acréscimo de velocidade
-mpay = 1 # kg - massa da payload
+deltav = 5300 # m/s - Acréscimo de velocidade
+mpay = 100 # kg - massa da payload
 m_rocket = 40 # kg - massa estimada do foguete
 
 add_new_fuel('Ethanol90', prop.card_Ethanol90)
 
-fuel = "Ethanol90"
-oxidizer = "N2O"
+fuel = "Ethanol"
+oxidizer = "LOX"
 #---------------------------------- Entradas do Programa ----------------------------------
 
 
@@ -113,7 +113,7 @@ class Individual:#(object)
         self.massa_motor = eq.engine_mass(F, P1, Razao_Expansao)
         
         # Calculo da massa de propelente, combustivel e oxidante
-        self.massa_propelente = eq.propellant_mass(self.isp, deltav, OF, mpay, m_rocket)
+        self.massa_propelente = eq.propellant_mass(self.isp, deltav, OF, mpay, self.massa_motor)
         massa_fuel = self.massa_propelente / (1 + self.genes[0])
         volume_fuel = massa_fuel / self.rho_fuel       
         massa_oxi = (self.massa_propelente * self.genes[0]) / (1 + self.genes[0])
@@ -149,13 +149,13 @@ class Individual:#(object)
         # Calculando Tempo de Queima tb
         self.t_burn = (self.isp * self.massa_propelente * g) / F
 
-        # Adicionando Restrições e Punições nas soluções
-        if self.t_burn >= 5 or self.empuxo >= 5000:
-            self.preco_total = 1.07 * self.preco_total 
+        #! Adicionando Restrições e Punições nas soluções
+        # if self.t_burn >= 5 or self.empuxo >= 5000:
+        #     self.preco_total = 1.07 * self.preco_total 
             
-        else:            
-            # self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
-            self.preco_total = self.preco_total
+        # else:            
+        #     # self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
+        #     #self.preco_total = self.preco_total
             
         self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
         

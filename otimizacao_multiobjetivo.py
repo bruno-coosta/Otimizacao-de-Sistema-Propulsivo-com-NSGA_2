@@ -219,7 +219,7 @@ def crowding_distance(P):
     
     for i in range(1, len(P) -1 ):
        # P[i].crowding_distance = (P[i + 1].inverso_isp - P[i - 1].inverso_isp)/((1/240) - (1/350))
-        P[i].crowding_distance = (P[i + 1].isp - P[i - 1].isp)/((300) - (50))
+        P[i].crowding_distance = (P[i + 1].isp - P[i - 1].isp)/((350) - (240))
     #     print(f'cd ISP {P[i].crowding_distance}')
     #     s_isp +=P[i].crowding_distance
     # print(f'Soma IsP {s_isp}')
@@ -228,7 +228,7 @@ def crowding_distance(P):
                 s1 = P[j - 1]
                 s2 = P[j]
                 
-                if s1.preco_total > s2.preco_total:
+                if s1.massa_total > s2.massa_total:
                     P[j - 1] = s2
                     P[j] = s1
         
@@ -236,7 +236,7 @@ def crowding_distance(P):
     P[len(P) - 1].crowding_distance = float('inf')
     
     for i in range(1, len(P) -1):
-        P[i].crowding_distance += (P[i + 1].preco_total - P[i - 1].preco_total)/(1500 - 100) 
+        P[i].crowding_distance += (P[i + 1].massa_total - P[i - 1].massa_total)/(10000 - 50) 
     #     print(f' cd massa {P[i].crowding_distance}')
     #     s_massa +=P[i].crowding_distance
     # print(f'Soma massa {s_massa}')
@@ -244,10 +244,10 @@ def crowding_distance(P):
 def domina(solucao_A, solucao_B):
     '''Verifica qual solucao é dominante'''
     
-    if solucao_A.isp >= solucao_B.isp and solucao_A.preco_total < solucao_B.preco_total :
+    if solucao_A.isp >= solucao_B.isp and solucao_A.massa_total < solucao_B.massa_total :
         dominacao = True
         
-    elif solucao_A.isp > solucao_B.isp and solucao_A.preco_total <= solucao_B.preco_total :
+    elif solucao_A.isp > solucao_B.isp and solucao_A.massa_total <= solucao_B.massa_total :
         dominacao = True
         
     else: 
