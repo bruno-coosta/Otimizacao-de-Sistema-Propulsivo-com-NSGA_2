@@ -54,8 +54,8 @@ class Individual:#(object)
         self.domination_count = 0
         self.dominated_solutions = []
         self.genes = [] #genes =[OF, Pc, dt, Pe] #primeiro será feito com um unico of e unico propelente
-        self.genes_lower = (1.0, 10, 10, 0.05)#(2, 10, 30, 1.0)
-        self.genes_upper = (8.0, 50, 150, 0.05) #(6, 28, 70, 1.01325)
+        self.genes_lower = (1, 10, 10, 0.15)#(1, 10, 30, 1.0)
+        self.genes_upper = (8, 50, 150, 0.15) #(8, 50, 70, 1.01325)
         self.k = 1.2 # Razão dos calores específicos Proviniente da razão of
         self.rho_fuel = 785 # kg/m^3 - Densidade do Ethanol 
         self.rho_oxidante = 1142 # kg/m^3 - Densidade do LOX
@@ -96,8 +96,9 @@ class Individual:#(object)
         A2 = At * Razao_Expansao
         self.Razao_Expansao = Razao_Expansao
 
-
-        isp, mode = self.cea.estimate_Ambient_Isp(Pc=P1* 14.5038, MR=OF, eps=Razao_Expansao, Pamb=14.7, frozen=0, frozenAtThroat=0)
+        #* Se o motor for testado em pressão ambiente, usar: 
+        #isp, mode = propelente.estimate_Ambient_Isp(Pc=P1* 14.5038, MR=OF, eps=Razao_Expansao, Pamb=14.7, frozen=0, frozenAtThroat=0)
+        isp= self.cea.get_Isp(Pc=P1* 14.5038, MR=OF, eps=Razao_Expansao, frozen=0, frozenAtThroat=0)
         self.isp = isp #self.cea.get_Isp(Pc=P1* 14.5038, MR=OF)
         
         self.Cf = ((self.isp * g)/self.cstar)  
@@ -149,15 +150,17 @@ class Individual:#(object)
         # Calculando Tempo de Queima tb
         self.t_burn = (self.isp * self.massa_propelente * g) / F
 
+        self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
+
         #! Adicionando Restrições e Punições nas soluções
-        # if self.t_burn >= 5 or self.empuxo >= 5000:
-        #     self.preco_total = 1.07 * self.preco_total 
+        if self.t_burn >= 400:
+            self.isp = 0.80 * self.isp
             
         # else:            
-        #     # self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
-        #     #self.preco_total = self.preco_total
+        #     self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
             
-        self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
+            
+        # self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
         
     
 #---------------------------------- Classes do Programa -----------------------------------      

@@ -27,7 +27,7 @@ inicio = time.time()
 #----------------------- Entradas do algoritmo de Otimização -----------------------
 
 num_geracoes = 10
-pop_size = 40
+pop_size = 100
 eta_sbx = 4
 eta_poly_mutation = 20
 
