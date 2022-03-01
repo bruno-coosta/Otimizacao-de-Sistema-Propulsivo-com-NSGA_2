@@ -209,7 +209,6 @@ def crowding_distance(P):
             s1 = P[j - 1]
             s2 = P[j]
             
-#            if s1.inverso_isp > s2.inverso_isp:
             if s1.isp > s2.isp:
                 P[j - 1] = s2
                 P[j] = s1
@@ -218,7 +217,6 @@ def crowding_distance(P):
     P[len(P) - 1].crowding_distance = float('inf')
     
     for i in range(1, len(P) -1 ):
-       # P[i].crowding_distance = (P[i + 1].inverso_isp - P[i - 1].inverso_isp)/((1/240) - (1/350))
         P[i].crowding_distance = (P[i + 1].isp - P[i - 1].isp)/((350) - (240))
     #     print(f'cd ISP {P[i].crowding_distance}')
     #     s_isp +=P[i].crowding_distance
@@ -236,7 +234,7 @@ def crowding_distance(P):
     P[len(P) - 1].crowding_distance = float('inf')
     
     for i in range(1, len(P) -1):
-        P[i].crowding_distance += (P[i + 1].massa_total - P[i - 1].massa_total)/(10000 - 50) 
+        P[i].crowding_distance += (P[i + 1].massa_total - P[i - 1].massa_total)/(189000 - 2400) 
     #     print(f' cd massa {P[i].crowding_distance}')
     #     s_massa +=P[i].crowding_distance
     # print(f'Soma massa {s_massa}')

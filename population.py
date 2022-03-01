@@ -7,7 +7,7 @@ import propelentes as prop
 #---------------------------------- Entradas do Programa ----------------------------------
 deltav = 5300 # m/s - Acréscimo de velocidade
 mpay = 100 # kg - massa da payload
-m_rocket = 40 # kg - massa estimada do foguete
+#m_rocket = 40 # kg - massa estimada do foguete
 
 add_new_fuel('Ethanol90', prop.card_Ethanol90)
 
@@ -37,7 +37,7 @@ class Population:
         self.oxidizer = oxidizer
         self.deltav = deltav
         self.mpay = mpay
-        self.m_rocket = m_rocket
+        #self.m_rocket = m_rocket
         
     def __len__(self):
         return len(self.population)
@@ -54,11 +54,11 @@ class Individual:#(object)
         self.domination_count = 0
         self.dominated_solutions = []
         self.genes = [] #genes =[OF, Pc, dt, Pe] #primeiro será feito com um unico of e unico propelente
-        self.genes_lower = (2.0, 10, 30, 1)#(2, 10, 30, 1.0)
-        self.genes_upper = (6.0, 28, 70, 1.01325) #(6, 28, 70, 1.01325)
+        self.genes_lower = (1.0, 10, 10, 0.05)#(2, 10, 30, 1.0)
+        self.genes_upper = (8.0, 50, 150, 0.05) #(6, 28, 70, 1.01325)
         self.k = 1.2 # Razão dos calores específicos Proviniente da razão of
-        self.rho_fuel = 800 # kg/m^3 - Densidade do Ethanol 90
-        self.rho_oxidante = 750 # kg/m^3 - Densidade do N2O
+        self.rho_fuel = 785 # kg/m^3 - Densidade do Ethanol 
+        self.rho_oxidante = 1142 # kg/m^3 - Densidade do LOX
         self.isp = 0
         self.massa_total = 0
         self.t_burn = 0
