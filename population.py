@@ -54,8 +54,8 @@ class Individual:#(object)
         self.domination_count = 0
         self.dominated_solutions = []
         self.genes = [] #genes =[OF, Pc, dt, Pe] #primeiro será feito com um unico of e unico propelente
-        self.genes_lower = (1, 10, 10, 0.15)#(1, 10, 30, 1.0)
-        self.genes_upper = (8, 50, 150, 0.15) #(8, 50, 70, 1.01325)
+        self.genes_lower = (1, 10, 20, 0.05)#(1, 10, 30, 1.0)
+        self.genes_upper = (8, 20, 110, 0.05) #(8, 50, 70, 1.01325)
         self.k = 1.2 # Razão dos calores específicos Proviniente da razão of
         self.rho_fuel = 785 # kg/m^3 - Densidade do Ethanol 
         self.rho_oxidante = 1142 # kg/m^3 - Densidade do LOX
@@ -153,8 +153,9 @@ class Individual:#(object)
         self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
 
         #! Adicionando Restrições e Punições nas soluções
-        if self.t_burn >= 400:
+        if self.t_burn >= 250:
             self.isp = 0.80 * self.isp
+            self.massa_total = 1.2 * self.massa_total
             
         # else:            
         #     self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante

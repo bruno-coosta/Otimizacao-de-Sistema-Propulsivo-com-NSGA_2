@@ -5,15 +5,17 @@ Created on Fri Dec 18 16:51:48 2020
 @author: Bruno Costa
 """
 from math import e, pi
-
+import pickle
+import warnings
 
 # Arquivo com as principais funcões utilizadas no programa 
 
 #---------------------------------- Entradas do Programa ----------------------------------
-deltav = 6600 # m/s - Acréscimo de velocidade
-mpay = 400 # kg - massa da payload
+deltav = 5300 # m/s - Acréscimo de velocidade
+mpay = 100 # kg - massa da payload
 Pi = 21 * 10**6 # Pa - Pressão inicial do gás pressurizante (Valor padrão)
 
+model_forest = pickle.load(open('random_forest_mass.sav', 'rb')) # Abrindo arquivo com modelo preditivo feito com random forest
 
 #---------------------------------- Entradas do Programa ----------------------------------
 
@@ -53,6 +55,18 @@ def engine_mass(Empuxo, Pc_Bar, razao_exp):
     m_eng_schlingloff = 1.34 * (m_valv + m_inj + m_cc + m_ne) # massa total do motor
     return m_eng_schlingloff
 
+def engine_mass_randomForest(Empuxo, Pc_Bar, razao_exp, Isp, Sistema_pressurizacao = 1):
+
+#* Sisteema de pressurização: Turbo Bomba(0); Pressure Feed(1)
+
+    F_KN = Empuxo/1000
+
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        m_eng_randomforest = model_forest.predict([[Sistema_pressurizacao, Pc_Bar, razao_exp, F_KN, Isp]])[0] 
+    
+    return m_eng_randomforest
+
 
 def propellant_mass(Isp, deltaV, razao_of, massa_payload, massa_motor, massa_tanks = 0):
     '''Estimativa de massa de propelente'''
@@ -91,7 +105,7 @@ def massa_pressurizante(PressaoMediaTank, VolumePropelente):
 def massa_tank(volume_substancia, pressao_tank = Pi):
     '''Estimativa de massa dos tanques esfericos'''
     
-    fs = 2 # safity factor
+    fs = 2 # safety factor
     ultimate_yield = 520 * 10**6# MPa - Limite de Escoamento
     rho_tank = 2710 # kg/m^3
    
