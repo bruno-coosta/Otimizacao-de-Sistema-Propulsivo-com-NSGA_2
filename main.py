@@ -227,8 +227,8 @@ plt.show()
 
 
 plt.title('Etanol - LOX', fontsize = 20, color='#0c2356')
-plt.scatter(isp_g10, massa_total_g10, color='r', label='Ger 10')
-plt.scatter(isp_g20, massa_total_g20, color='green', label='Ger 20')
+plt.scatter(isp_g10, massa_total_g10, color='green', label='Ger 10')
+plt.scatter(isp_g20, massa_total_g20, color='gray', label='Ger 20')
 plt.scatter(isp, massa_total, color='#27a9e1', label='Ger 60')
 plt.legend()
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')

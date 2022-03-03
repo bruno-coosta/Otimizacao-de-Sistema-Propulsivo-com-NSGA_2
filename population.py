@@ -13,6 +13,9 @@ add_new_fuel('Ethanol90', prop.card_Ethanol90)
 
 fuel = "Ethanol"
 oxidizer = "LOX"
+comb_efficiency = 0.93
+exp_efficiency = 0.97
+energ_efficiency = comb_efficiency * exp_efficiency
 #---------------------------------- Entradas do Programa ----------------------------------
 
 
@@ -90,7 +93,7 @@ class Individual:#(object)
         At = (math.pi/4)*self.genes[2]**2
         P2 = self.genes[3]
         g = 9.81
-        self.cstar = (self.cea.get_Cstar(Pc = P1* 14.5038, MR = OF)) * 0.3048 #mudando de ft/s para m/s
+        self.cstar = comb_efficiency * (self.cea.get_Cstar(Pc = P1* 14.5038, MR = OF)) * 0.3048 #mudando de ft/s para m/s
         
         Razao_Expansao = self.cea.get_eps_at_PcOvPe(Pc=P1* 14.5038, MR=OF, PcOvPe = (P1/P2))   # passando de bar para psi   
         A2 = At * Razao_Expansao
@@ -98,7 +101,7 @@ class Individual:#(object)
 
         #* Se o motor for testado em pressão ambiente, usar: 
         #isp, mode = propelente.estimate_Ambient_Isp(Pc=P1* 14.5038, MR=OF, eps=Razao_Expansao, Pamb=14.7, frozen=0, frozenAtThroat=0)
-        isp= self.cea.get_Isp(Pc=P1* 14.5038, MR=OF, eps=Razao_Expansao, frozen=0, frozenAtThroat=0)
+        isp = energ_efficiency * self.cea.get_Isp(Pc=P1* 14.5038, MR=OF, eps=Razao_Expansao, frozen=0, frozenAtThroat=0)
         self.isp = isp #self.cea.get_Isp(Pc=P1* 14.5038, MR=OF)
         
         self.Cf = ((self.isp * g)/self.cstar)  
