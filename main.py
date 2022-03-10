@@ -28,7 +28,7 @@ inicio = time.time()
 
 num_geracoes = 61
 pop_size = 100
-eta_sbx = 4
+eta_sbx = 4.5
 eta_poly_mutation = 20
 
 #----------------------- Entradas do algoritmo de Otimização -----------------------
@@ -151,8 +151,8 @@ with open(endereco,'w') as arquivo:
 isp = []
 massa_total = []
 
-isp_g1 = []
-massa_total_g1 = []
+isp_g0 = []
+massa_total_g0 = []
 
 isp_g10 = []
 massa_total_g10 = []
@@ -160,18 +160,21 @@ massa_total_g10 = []
 isp_g20 = []
 massa_total_g20 = []
 
-isp_g50 = []
-massa_total_g50 = []
+isp_g60 = []
+massa_total_g60 = []
+
+isp_geral = []
+massa_total_geral = []
 
 
 
 
-for individuo in P[1]:
-    isp_g1.append(individuo.isp)
-    massa_total_g1.append(individuo.massa_total)
+for individuo in P[0]:
+    isp_g0.append(individuo.isp)
+    massa_total_g0.append(individuo.massa_total)
 
-plt.title('Etanol - LOX (Geração 1)', fontsize = 20, color='#0c2356')
-plt.scatter(isp_g1, massa_total_g1, color='r')
+plt.title('Etanol - LOX (Geração 0)', fontsize = 20, color='#0c2356')
+plt.scatter(isp_g0, massa_total_g0, color='r')
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
 plt.ylabel('Massa Total do Sistema Propulsivo [kg]', fontsize = 15, color='#0c2356')
 plt.grid(alpha=0.4)
@@ -217,7 +220,7 @@ plt.show()
 
 
 plt.title('Etanol - LOX', fontsize = 20, color='#0c2356')
-plt.scatter(isp_g1, massa_total_g1, color='r', label='Ger 1')
+plt.scatter(isp_g0, massa_total_g0, color='r', label='Ger 0')
 plt.scatter(isp, massa_total, color='#27a9e1', label='Ger 60')
 plt.legend()
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
@@ -237,15 +240,33 @@ plt.grid(alpha=0.4)
 plt.show()
 
 
-# for individuo in P[50]:
-#     isp_g50.append(individuo.isp)
-#     massa_total_g50.append(individuo.massa_total)
+for conjunto in P:
+    for individuo in conjunto:
+        isp_geral.append(individuo.isp)
+        massa_total_geral.append(individuo.massa_total)
 
-# plt.title('Etanol - LOX (Geração 50)', fontsize = 20, color='#0c2356')
-# plt.scatter(isp_g50, massa_total_g50, color='gray')
-# plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
-# plt.ylabel('Massa Total do Sistema Propulsivo [kg]', fontsize = 15, color='#0c2356')
-# plt.grid(alpha=0.4)
-# plt.show()
+
+plt.title('Etanol - LOX ', fontsize = 20, color='#0c2356')
+plt.scatter(isp_geral, massa_total_geral, color='gray')
+plt.scatter(isp, massa_total, color='#27a9e1')
+plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
+plt.ylabel('Massa Total do Sistema Propulsivo [kg]', fontsize = 15, color='#0c2356')
+plt.grid(alpha=0.4)
+plt.show()
+
+
+
+for individuo in P[60]:
+    isp_g60.append(individuo.isp)
+    massa_total_g60.append(individuo.massa_total)
+
+plt.title('Etanol - LOX (Geração 60)', fontsize = 20, color='#0c2356')
+plt.scatter(isp_g60, massa_total_g60, color='#27a9e1')
+plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
+plt.ylabel('Massa Total do Sistema Propulsivo [kg]', fontsize = 15, color='#0c2356')
+plt.grid(alpha=0.4)
+plt.show()
+
+
 
 #-------------------------------- Plotando graficos --------------------------------

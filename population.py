@@ -13,8 +13,8 @@ add_new_fuel('Ethanol90', prop.card_Ethanol90)
 
 fuel = "Ethanol"
 oxidizer = "LOX"
-comb_efficiency = 0.93
-exp_efficiency = 0.97
+comb_efficiency = 1 #0.92 # 0.90 # 0.93
+exp_efficiency = 1 #0.97 # 1 # 0.98
 energ_efficiency = comb_efficiency * exp_efficiency
 #---------------------------------- Entradas do Programa ----------------------------------
 
@@ -57,8 +57,8 @@ class Individual:#(object)
         self.domination_count = 0
         self.dominated_solutions = []
         self.genes = [] #genes =[OF, Pc, dt, Pe] #primeiro será feito com um unico of e unico propelente
-        self.genes_lower = (1, 10, 20, 0.05)#(1, 10, 30, 1.0)
-        self.genes_upper = (8, 20, 110, 0.05) #(8, 50, 70, 1.01325)
+        self.genes_lower = (1, 10, 20, 0.075)#(1, 10, 30, 1.0)
+        self.genes_upper = (8, 20, 110, 0.075) #(8, 50, 70, 1.01325)
         self.k = 1.2 # Razão dos calores específicos Proviniente da razão of
         self.rho_fuel = 785 # kg/m^3 - Densidade do Ethanol 
         self.rho_oxidante = 1142 # kg/m^3 - Densidade do LOX
@@ -93,11 +93,16 @@ class Individual:#(object)
         At = (math.pi/4)*self.genes[2]**2
         P2 = self.genes[3]
         g = 9.81
+        dt = self.genes[2]
         self.cstar = comb_efficiency * (self.cea.get_Cstar(Pc = P1* 14.5038, MR = OF)) * 0.3048 #mudando de ft/s para m/s
         
         Razao_Expansao = self.cea.get_eps_at_PcOvPe(Pc=P1* 14.5038, MR=OF, PcOvPe = (P1/P2))   # passando de bar para psi   
-        A2 = At * Razao_Expansao
+        #A2 = At * Razao_Expansao
         self.Razao_Expansao = Razao_Expansao
+
+        # Diâmetro externo do Bocal
+        de = dt * Razao_Expansao
+
 
         #* Se o motor for testado em pressão ambiente, usar: 
         #isp, mode = propelente.estimate_Ambient_Isp(Pc=P1* 14.5038, MR=OF, eps=Razao_Expansao, Pamb=14.7, frozen=0, frozenAtThroat=0)
@@ -156,7 +161,7 @@ class Individual:#(object)
         self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
 
         #! Adicionando Restrições e Punições nas soluções
-        if self.t_burn >= 250:
+        if de >= 1500 or self.t_burn >= 250 or self.massa_total > 780:
             self.isp = 0.80 * self.isp
             self.massa_total = 1.2 * self.massa_total
             
