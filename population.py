@@ -142,7 +142,7 @@ class Individual:#(object)
         
         
         # Calculo da massa e do volume de pressurizate
-        self.massa_pressurizante, self.volume_pressurizante = eq.massa_pressurizante(Ptank_average, volume_fuel)
+        self.massa_pressurizante, self.volume_pressurizante = eq.massa_pressurizante(Ptank_average, volume_propelente)
 
         # Calculo da massa dos tanques de combustivel, oxidante e pressurizante
         self.massa_tank_fuel = eq.massa_tank(volume_fuel, Ptank_fuel)
