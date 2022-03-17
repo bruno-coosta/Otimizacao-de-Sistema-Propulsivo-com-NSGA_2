@@ -28,7 +28,7 @@ inicio = time.time()
 
 num_geracoes = 61
 pop_size = 100
-eta_sbx = 4.5
+eta_sbx = 4 #4.5
 eta_poly_mutation = 20
 
 #----------------------- Entradas do algoritmo de Otimização -----------------------
@@ -173,6 +173,30 @@ for individuo in P[0]:
     isp_g0.append(individuo.isp)
     massa_total_g0.append(individuo.massa_total)
 
+for individuo in P[10]:
+    isp_g10.append(individuo.isp)
+    massa_total_g10.append(individuo.massa_total)
+
+for individuo in P[20]:
+    isp_g20.append(individuo.isp)
+    massa_total_g20.append(individuo.massa_total)
+
+for individuo in P[num_geracoes-1]:
+    isp.append(individuo.isp)
+    massa_total.append(individuo.massa_total)
+
+
+plt.title('Etanol - LOX', fontsize = 20, color='#0c2356')
+plt.scatter(isp_g10, massa_total_g10, color='green', label='Ger 10')
+plt.scatter(isp_g20, massa_total_g20, color='gray', label='Ger 20')
+plt.scatter(isp, massa_total, color='#27a9e1', label='Ger 60')
+plt.legend()
+plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
+plt.ylabel('Massa Total do Sistema Propulsivo [kg]', fontsize = 15, color='#0c2356')
+plt.grid(alpha=0.4)
+plt.show()
+
+
 plt.title('Etanol - LOX (Geração 0)', fontsize = 20, color='#0c2356')
 plt.scatter(isp_g0, massa_total_g0, color='r')
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
@@ -181,10 +205,6 @@ plt.grid(alpha=0.4)
 plt.show()
 
 
-
-for individuo in P[10]:
-    isp_g10.append(individuo.isp)
-    massa_total_g10.append(individuo.massa_total)
 
 plt.title('Etanol - LOX (Geração 10)', fontsize = 20, color='#0c2356')
 plt.scatter(isp_g10, massa_total_g10, color='green')
@@ -195,10 +215,6 @@ plt.show()
 
 
 
-for individuo in P[20]:
-    isp_g20.append(individuo.isp)
-    massa_total_g20.append(individuo.massa_total)
-
 plt.title('Etanol - LOX (Geração 20)', fontsize = 20, color='#0c2356')
 plt.scatter(isp_g20, massa_total_g20, color='gray')
 plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
@@ -207,9 +223,6 @@ plt.grid(alpha=0.4)
 plt.show()
 
 
-for individuo in P[num_geracoes-1]:
-    isp.append(individuo.isp)
-    massa_total.append(individuo.massa_total)
 
 plt.scatter(isp, massa_total, color='#27a9e1')
 plt.title('Etanol - LOX (Última geração)', fontsize = 20, color='#0c2356')
