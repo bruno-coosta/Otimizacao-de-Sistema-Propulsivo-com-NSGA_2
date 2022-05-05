@@ -100,7 +100,7 @@ class Individual:#(object)
         #A2 = At * Razao_Expansao
         self.Razao_Expansao = Razao_Expansao
 
-        # Diâmetro externo do Bocal
+        # Diâmetro externo do Bocal                                                 
         de = dt * Razao_Expansao
 
 
