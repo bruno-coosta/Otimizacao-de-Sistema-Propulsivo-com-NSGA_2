@@ -5,7 +5,7 @@ from rocketcea.cea_obj import CEA_Obj, add_new_fuel, add_new_oxidizer
 import propelentes as prop
 
 #---------------------------------- Entradas do Programa ----------------------------------
-deltav = 5300 # m/s - Acréscimo de velocidade
+deltav = 4000 # m/s - Acréscimo de velocidade
 mpay = 100 # kg - massa da payload
 #m_rocket = 40 # kg - massa estimada do foguete
 
@@ -13,8 +13,8 @@ add_new_fuel('Ethanol90', prop.card_Ethanol90)
 
 fuel = "Ethanol"
 oxidizer = "LOX"
-comb_efficiency = 1 #0.92 # 0.90 # 0.93
-exp_efficiency = 1 #0.97 # 1 # 0.98
+comb_efficiency = 0.92 # 0.90 # 0.93
+exp_efficiency = 0.97 # 1 # 0.98
 energ_efficiency = comb_efficiency * exp_efficiency
 #---------------------------------- Entradas do Programa ----------------------------------
 
@@ -79,6 +79,10 @@ class Individual:#(object)
         self.massa_tank_oxi = 0
         self.massa_tank_pressurizante = 0
         self.deltaP_inj = 0
+
+        self.massa_estrutural = 0
+        self.relacao_empuxo_peso_inicial = 0
+        self.relacao_empuxo_peso_final = 0
         
         self.preco_fuel = 0
         self.preco_oxi = 0
@@ -120,45 +124,62 @@ class Individual:#(object)
 
         # Calculo da massa do motor
         self.massa_motor = eq.engine_mass(F, P1, Razao_Expansao)
-        
-        # Calculo da massa de propelente, combustivel e oxidante
-        self.massa_propelente = eq.propellant_mass(self.isp, deltav, OF, mpay, self.massa_motor)
-        massa_fuel = self.massa_propelente / (1 + self.genes[0])
-        volume_fuel = massa_fuel / self.rho_fuel       
-        massa_oxi = (self.massa_propelente * self.genes[0]) / (1 + self.genes[0])
-        volume_oxi = massa_oxi / self.rho_oxidante
-        volume_propelente = volume_fuel + volume_oxi
-        
-        # Calculo pressões dos tanques de combustivel e oxidante
-        Pc = P1 * 10**(5) #  passando para pascal
-        deltaP_inj = 0.4 * Pc
-        self.deltaP_inj = 0.4 * P1
-        deltaP_feed = 50000 
-        deltaP_dynamics_fuel = 0.5 * self.rho_fuel * 10**2
-        deltaP_dynamics_oxi = 0.5 * self.rho_oxidante * 10**2        
-        Ptank_fuel = deltaP_inj + deltaP_feed + deltaP_dynamics_fuel + Pc
-        Ptank_oxi = deltaP_inj + deltaP_feed + deltaP_dynamics_oxi + Pc
-        Ptank_average = Ptank_fuel #((Ptank_fuel + Ptank_oxi)/2)
-        
-        
-        # Calculo da massa e do volume de pressurizate
-        self.massa_pressurizante, self.volume_pressurizante = eq.massa_pressurizante(Ptank_average, volume_propelente)
 
-        # Calculo da massa dos tanques de combustivel, oxidante e pressurizante
-        self.massa_tank_fuel = eq.massa_tank(volume_fuel, Ptank_fuel)
-        self.massa_tank_oxi = eq.massa_tank(volume_oxi, Ptank_oxi)
-        self.massa_tank_pressurizante = eq.massa_tank(self.volume_pressurizante)
+
+        #!Calculo da massa de propelente, pressurizante e tanques
+        m_tanks = [0]
+        i = 0 #contador
+        self.massa_pressurizante = 0
+
+        while True:
+            # Calculo da massa de propelente, combustivel e oxidante
+            self.massa_propelente = eq.propellant_mass(self.isp, deltav, OF, mpay, self.massa_motor, m_tanks[i]) - self.massa_pressurizante
+            massa_fuel = self.massa_propelente / (1 + self.genes[0])
+            volume_fuel = massa_fuel / self.rho_fuel       
+            massa_oxi = (self.massa_propelente * self.genes[0]) / (1 + self.genes[0])
+            volume_oxi = massa_oxi / self.rho_oxidante
+            volume_propelente = volume_fuel + volume_oxi
         
-        #Calculando o preço total de reagentes
-        self.preco_fuel = volume_fuel * 1000 * precoFuel_litro # passando unidade do volume de m³ para litro
-        self.preco_oxi = massa_oxi * precoOxidizer_Kg
-        self.preco_pressurizante = self.volume_pressurizante * precoPressurizante_m3
-        self.preco_total = (self.preco_fuel + self.preco_oxi + self.preco_pressurizante)
+            # Calculo pressões dos tanques de combustivel e oxidante
+            Pc = P1 * 10**(5) #  passando para pascal
+            deltaP_inj = 0.4 * Pc
+            self.deltaP_inj = 0.4 * P1
+            deltaP_feed = 50000 
+            deltaP_dynamics_fuel = 0.5 * self.rho_fuel * 10**2
+            deltaP_dynamics_oxi = 0.5 * self.rho_oxidante * 10**2        
+            Ptank_fuel = deltaP_inj + deltaP_feed + deltaP_dynamics_fuel + Pc
+            Ptank_oxi = deltaP_inj + deltaP_feed + deltaP_dynamics_oxi + Pc
+            Ptank_average = (Ptank_fuel + Ptank_oxi)/2
+        
+        
+            # Calculo da massa e do volume de pressurizate
+            self.massa_pressurizante, self.volume_pressurizante = eq.massa_pressurizante(Ptank_average, volume_propelente)
+
+            # Calculo da massa dos tanques de combustivel, oxidante e pressurizante
+            self.massa_tank_fuel = eq.massa_tank(volume_fuel, Ptank_fuel)
+            self.massa_tank_oxi = eq.massa_tank(volume_oxi, Ptank_oxi)
+            self.massa_tank_pressurizante = eq.massa_tank(self.volume_pressurizante)
+
+            i += 1
+            m_tanks.append(self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante)
+            if (abs(m_tanks[i] - m_tanks[i-1]) <= 0.0001) : break
+        
+        
         
         # Calculando Tempo de Queima tb
         self.t_burn = (self.isp * self.massa_propelente * g) / F
 
         self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
+        self.relacao_empuxo_peso_inicial = F/((self.massa_total + mpay) * g)
+
+        self.massa_estrutural = self.massa_motor + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante
+        self.relacao_empuxo_peso_final = F/((self.massa_estrutural + mpay) * g)
+
+        #Calculando o preço total de reagentes
+        self.preco_fuel = volume_fuel * 1000 * precoFuel_litro # passando unidade do volume de m³ para litro
+        self.preco_oxi = massa_oxi * precoOxidizer_Kg
+        self.preco_pressurizante = self.volume_pressurizante * precoPressurizante_m3
+        self.preco_total = (self.preco_fuel + self.preco_oxi + self.preco_pressurizante)
 
         #! Adicionando Restrições e Punições nas soluções
         if de >= 1500 or self.t_burn >= 250: #or self.massa_total > 780:

@@ -11,7 +11,7 @@ import warnings
 # Arquivo com as principais funcões utilizadas no programa 
 
 #---------------------------------- Entradas do Programa ----------------------------------
-deltav = 5300 # m/s - Acréscimo de velocidade
+deltav = 4000 # m/s - Acréscimo de velocidade
 mpay = 100 # kg - massa da payload
 Pi = 21 * 10**6 # Pa - Pressão inicial do gás pressurizante (Valor padrão)
 
@@ -106,9 +106,10 @@ def massa_pressurizante(PressaoMediaTank, VolumePropelente):
 def massa_tank(volume_substancia, pressao_tank = Pi):
     '''Estimativa de massa dos tanques esfericos'''
     
-    fs = 2 # safety factor
-    ultimate_yield = 520 * 10**6# MPa - Limite de Escoamento
-    rho_tank = 2710 # kg/m^3
+    fs = 1.25 # safety factor
+    #? Liga Ti-6Al-4V
+    ultimate_yield = 830 * 10**6 # MPa - Limite de Escoamento
+    rho_tank = 4428.785 # kg/m^3
    
     r_tank =(0.75 * volume_substancia * (1/pi))**(1/3)
     A_tank = 4 * pi * r_tank**2

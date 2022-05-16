@@ -1,13 +1,2 @@
-plt.title('Etanol - LOX(Geração 25)', fontsize = 20, color='#0c2356')
-# plt.scatter(isp_g25, massa_total_g25, color='yellow')
-# plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
-# plt.ylabel('Massa Total do Sistema Prpulsivo [kg]', fontsize = 15, color='#0c2356')
-# plt.grid(alpha=0.4)
-# plt.show()
 
-# plt.title('Etanol - LOX(Geração 50)', fontsize = 20, color='#0c2356')
-# plt.scatter(isp_g50, massa_total_g50, color='gray')
-# plt.xlabel('isp [s]', fontsize = 15, color='#0c2356')
-# plt.ylabel('Massa Total do Sistema Prpulsivo [kg]', fontsize = 15, color='#0c2356')
-# plt.grid(alpha=0.4)
-# plt.show()
+#-------------------------------- Plotando graficos ---------------
