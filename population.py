@@ -13,8 +13,8 @@ add_new_fuel('Ethanol90', prop.card_Ethanol90)
 
 fuel = "Ethanol"
 oxidizer = "LOX"
-comb_efficiency = 0.92 # 0.90 # 0.93
-exp_efficiency = 0.97 # 1 # 0.98
+comb_efficiency = 1 # 0.90 # 0.93
+exp_efficiency = 1 # 1 # 0.97
 energ_efficiency = comb_efficiency * exp_efficiency
 #---------------------------------- Entradas do Programa ----------------------------------
 
@@ -88,6 +88,8 @@ class Individual:#(object)
         self.preco_oxi = 0
         self.preco_pressurizante = 0
         self.preco_total = 0
+
+        self.geracao = 0
         
                
     def calcula_objetivos(self):
@@ -181,10 +183,16 @@ class Individual:#(object)
         self.preco_pressurizante = self.volume_pressurizante * precoPressurizante_m3
         self.preco_total = (self.preco_fuel + self.preco_oxi + self.preco_pressurizante)
 
+        
         #! Adicionando Restrições e Punições nas soluções
-        if de >= 1500 or self.t_burn >= 250: #or self.massa_total > 780:
-            self.isp = 0.80 * self.isp
+        if (de >= 1500 or self.t_burn >= 264):
+            self.isp = 0.8 * self.isp
             self.massa_total = 1.2 * self.massa_total
+
+        if (self.massa_total >= 720):
+            self.isp = 0.95 * self.isp
+            self.massa_total = 1.05 * self.massa_total
+
             
         # else:            
         #     self.massa_total = self.massa_motor + self.massa_propelente + self.massa_pressurizante + self.massa_tank_fuel + self.massa_tank_oxi + self.massa_tank_pressurizante

@@ -11,6 +11,7 @@ def first_gen(pop_size, gen=0):
 
         individual = population.Individual()  
         individual.name = 'solucao ' + str(len(povoamento)+1)
+        #individual.geracao = 1
         for i in range(len(individual.genes_lower)):
             gene = round(random.uniform(individual.genes_lower[i], individual.genes_upper[i]), 5)
             individual.genes.append(gene)
