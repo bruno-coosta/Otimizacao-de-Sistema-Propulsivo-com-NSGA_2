@@ -13,8 +13,8 @@ add_new_fuel('Ethanol90', prop.card_Ethanol90)
 
 fuel = "Ethanol"
 oxidizer = "LOX"
-comb_efficiency = 1 # 0.90 # 0.93
-exp_efficiency = 1 # 1 # 0.97
+comb_efficiency = 0.93 # 0.90 # 0.93
+exp_efficiency = 0.90 # 1 # 0.97
 energ_efficiency = comb_efficiency * exp_efficiency
 #---------------------------------- Entradas do Programa ----------------------------------
 
@@ -189,7 +189,7 @@ class Individual:#(object)
             self.isp = 0.8 * self.isp
             self.massa_total = 1.2 * self.massa_total
 
-        if (self.massa_total >= 720):
+        if (self.massa_total >= 880):
             self.isp = 0.95 * self.isp
             self.massa_total = 1.05 * self.massa_total
 
