@@ -107,7 +107,7 @@ class Individual:#(object)
         self.Razao_Expansao = Razao_Expansao
 
         # Diâmetro externo do Bocal                                                 
-        de = dt * Razao_Expansao
+        de = dt * math.sqrt(Razao_Expansao)
 
 
         #* Se o motor for testado em pressão ambiente, usar: 
