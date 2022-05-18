@@ -14,7 +14,7 @@ add_new_fuel('Ethanol90', prop.card_Ethanol90)
 fuel = "Ethanol"
 oxidizer = "LOX"
 comb_efficiency = 0.93 # 0.90 # 0.93
-exp_efficiency = 0.90 # 1 # 0.97
+exp_efficiency = 0.97 # 1 # 0.97
 energ_efficiency = comb_efficiency * exp_efficiency
 #---------------------------------- Entradas do Programa ----------------------------------
 
@@ -57,8 +57,8 @@ class Individual:#(object)
         self.domination_count = 0
         self.dominated_solutions = []
         self.genes = [] #genes =[OF, Pc, dt, Pe] #primeiro será feito com um unico of e unico propelente
-        self.genes_lower = (1, 10, 20, 0.075)#(1, 10, 30, 1.0)
-        self.genes_upper = (8, 20, 110, 0.075) #(8, 50, 70, 1.01325)
+        self.genes_lower = (1, 10, 20, 0.0125)#(1, 10, 30, 1.0)
+        self.genes_upper = (8, 20, 110, 1.01325) #(8, 50, 70, 1.01325)
         self.k = 1.2 # Razão dos calores específicos Proviniente da razão of
         self.rho_fuel = 785 # kg/m^3 - Densidade do Ethanol 
         self.rho_oxidante = 1142 # kg/m^3 - Densidade do LOX
