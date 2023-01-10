@@ -5,7 +5,7 @@ Created on Tue Dec 15 14:45:04 2020
 @author: Bruno Costa
 
 O objetivo desse código é desenvolver um algoritmo de otimização multiobjetivo utilizando NSGA2 que 
-maximize o Isp do propulsor e minimize os custos de propelente e pressurizante
+maximize o Isp do propulsor e minimiza a massa total do sistema
 
 
 """
